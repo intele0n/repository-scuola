@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="it" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Verifica form</title>
+  </head>
+
+  <body>
+
+    <script>
+
+      function controllaPassword(password)
+      {
+          var nome = document.getElementById("fname").value;
+          var cognome = document.getElementById("fname").value;
+
+          if (password.includes(nome) || password.includes(cognome))
+          {
+            return true;
+          }
+          else {
+            return false;
+          }
+      }
+
+      function controllaDataDiNascita()
+      {
+        var data = new Date(document.getElementById("data-nascita").value);
+        var annoInInput = data.getFullYear();
+
+        var dataCorrente = new Date();
+        var annoCorrente = dataCorrente.getFullYear();
+
+        var eta = document.getElementById("eta").value;
+        var etaData = annoCorrente - annoInInput;
+
+        console.log(eta + " " + etaData);
+
+        if (eta != etaData) {
+          return false;
+        }
+        else {
+          return true;
+        }
+      }
+
+      function controllaCategoria()
+      {
+        var data = document.getElementById("data-nascita").value;
+        var d = new Date(data);
+
+        var anno = d.getFullYear();
+
+        var comune = document.getElementById("comune").value;
+
+        if (anno > 2000 && comune == "Milano" || comune == "Torino")
+        {
+          return true;
+        }
+        else {
+          return false;
+        }
+      }
+
+      function sbloccaTasto()
+      {
+        var tasto = document.getElementById("sub");
+        tasto.disabled = !tasto.disabled;
+      }
+
+      function controllo()
+      {
+          console.log("controllo");
+          var gender = document.getElementById("genderlist").value;
+          var password = document.getElementById("password").value;
+          var eta = document.getElementById("eta").value;
+
+          if (controllaDataDiNascita() == false) {
+            alert("La tua data di nascita e la tua età non corrispondono!");
+            return;
+          }
+
+          if (controllaPassword(password) == true)
+          {
+            alert("Password non sicura!");
+            return;
+          }
+
+          if (controllaCategoria() == true)
+          {
+            alert("Iscrizioni chiuse per questa categoria");
+            return;
+          }
+
+          var benvenuto = "Benvenut";
+
+          switch (gender) {
+            case "Maschio":
+              benvenuto += "o!";
+              break;
+
+            case "Femmina":
+              benvenuto += "a!";
+              break;
+
+            default:
+              benvenuto += "*!";
+              break;
+          }
+
+          if (eta >= 18)
+          {
+            benvenuto += " (Utente maggiorenne)";
+          }
+
+          alert(benvenuto);
+
+      }
+    </script>
+
+    <h1>Form di registrazione</h1>
+
+    <form onsubmit="return controllo()">
+      <label for="name">Nome:</label><br>
+      <input type="text" maxlength="32" minlength="1" name="name" id="fname" required><br><br>
+
+      <label for="surname">Cognome:</label><br>
+      <input type="text" maxlength="32" minlength="1" name="surname" id="lname" required><br><br>
+
+      <label for="eta">Età</label><br>
+      <input type="number" maxlength="4" min="14" max="45" size="8" name="eta" id="eta" required><br><br>
+
+      <label for="nascita">Data Di Nascita: </label><br>
+      <input type="date" name="nascita" id="data-nascita" required><br><br>
+
+      <label for="telefono">Telefono:</label><br>
+      <input type="tel" id="telefono" maxlength="10" name="telefono" pattern="[0-9]{3}[0-9]{3}[0-9]{4}" required><br><br>
+
+      <label for="comune">Comune di residenza:</label><br>
+      <input list="comuni" name="comune" maxlength="32" minlength="2" id="comune" required>
+      <datalist id="comuni" class="">
+        <option value="Milano"></option>
+        <option value="Genova"></option>
+        <option value="Torino"></option>
+        <option value="Roma"></option>
+        <option value="Altro"></option>
+      </datalist><br><br>
+
+      <label for="gender">Sesso:</label><br>
+      <input list="genders" id="genderlist" maxlength="32" required>
+      <datalist id="genders" class="">
+        <option value="Maschio"></option>
+        <option value="Femmina"></option>
+        <option value="Altro"></option>
+      </datalist><br><br>
+
+      <label for="password">Password:</label><br>
+      <input type="password" name="password" minlength="8" maxlength="32" id="password" value=""><br><br>
+
+      <input type="checkbox" onchange="sbloccaTasto()" id="tos" name="tos" value="">
+      <label for="tos">Accetto i termini e condizioni</label><br><br>
+
+      <input type="submit" id="sub" value="Registrati" disabled>
+
+    </form>
+
+
+  </body>
+
+
+</html>
